@@ -6,6 +6,9 @@ public let MBDirectionsErrorDomain = "MBDirectionsErrorDomain"
 /// The Mapbox access token specified in the main application bundle’s Info.plist.
 let defaultAccessToken = Bundle.main.object(forInfoDictionaryKey: "MGLMapboxAccessToken") as? String
 
+/// The Mapbox public host
+internal let mapboxHost = "api.mapbox.com"
+
 /// The user agent string for any HTTP requests performed directly within this library.
 let userAgent: String = {
     var components: [String] = []
@@ -114,12 +117,12 @@ open class Directions: NSObject {
      */
     @objc(sharedDirections)
     open static let shared = Directions(accessToken: nil)
-    
+
     /// The API endpoint to request the directions from.
     internal var apiEndpoint: URL
     
     /// The Mapbox access token to associate the request with.
-    internal let accessToken: String
+    internal var accessToken: String?
     
     /**
      Initializes a newly created directions object with an optional access token and host.
@@ -128,14 +131,26 @@ open class Directions: NSObject {
      - parameter host: An optional hostname to the server API. The [Mapbox Directions API](https://www.mapbox.com/api-documentation/?language=Swift#directions) endpoint is used by default.
      */
     public init(accessToken: String?, host: String?) {
-        let accessToken = accessToken ?? defaultAccessToken
-        assert(accessToken != nil && !accessToken!.isEmpty, "A Mapbox access token is required. Go to <https://www.mapbox.com/studio/account/tokens/>. In Info.plist, set the MGLMapboxAccessToken key to your access token, or use the Directions(accessToken:host:) initializer.")
-        
-        self.accessToken = accessToken!
-        
-        var baseURLComponents = URLComponents()
-        baseURLComponents.scheme = "https"
-        baseURLComponents.host = host ?? "api.mapbox.com"
+		var baseURLComponents: URLComponents
+        if host == nil {
+            let accessToken = accessToken ?? defaultAccessToken
+            assert(accessToken != nil && !accessToken!.isEmpty, "A Mapbox access token is required. Go to <https://www.mapbox.com/studio/account/tokens/>. In Info.plist, set the MGLMapboxAccessToken key to your access token, or use the Directions(accessToken:host:) initializer.")
+
+            self.accessToken = accessToken
+			baseURLComponents = URLComponents()
+			baseURLComponents.scheme = "https"
+			baseURLComponents.host = mapboxHost
+        }
+        else {
+			var urlString = host!
+			if urlString.hasPrefix("http") == false {
+				urlString = "http://\(urlString)"
+			}
+			let url = URL(string: urlString)
+			assert(url != nil, "A valid custom host must be provided (ex: my_host.com or full http://my_host.com:8080")
+			baseURLComponents = URLComponents(url: url!, resolvingAgainstBaseURL: false)!
+		}
+
         self.apiEndpoint = baseURLComponents.url!
     }
     
@@ -229,11 +244,26 @@ open class Directions: NSObject {
      */
     @objc(URLForCalculatingDirectionsWithOptions:)
     open func url(forCalculating options: RouteOptions) -> URL {
-        let params = options.params + [
-            URLQueryItem(name: "access_token", value: accessToken),
-        ]
-        
-        let unparameterizedURL = URL(string: options.path, relativeTo: apiEndpoint)!
+        let isMapboxHost = apiEndpoint.host == mapboxHost
+        var params = options.params
+        if isMapboxHost {
+            params += [
+                URLQueryItem(name: "access_token", value: accessToken),
+            ]
+        }
+
+        let path: String
+        if isMapboxHost {
+            path = options.path
+        }
+        else
+        {
+            assert(!options.queries.isEmpty, "No query")
+            let queryComponent = options.queries.joined(separator: ";")
+            path = "route/v1/\(options.profileIdentifier.rawValue)/\(queryComponent)"
+        }
+
+        let unparameterizedURL = URL(string: path, relativeTo: apiEndpoint)!
         var components = URLComponents(url: unparameterizedURL, resolvingAgainstBaseURL: true)!
         components.queryItems = params
         return components.url!

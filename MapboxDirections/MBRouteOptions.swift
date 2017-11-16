@@ -342,7 +342,7 @@ open class RouteOptions: NSObject, NSSecureCoding, NSCopying{
         assert(!queries.isEmpty, "No query")
 
         let queryComponent = queries.joined(separator: ";")
-        return "directions/v5/\(profileIdentifier.rawValue)/\(queryComponent).json"
+        return "directions/v5/mapbox/\(profileIdentifier.rawValue)/\(queryComponent).json"
     }
 
     /**
@@ -570,7 +570,7 @@ open class RouteOptionsV4: RouteOptions {
 
         let profileIdentifier = self.profileIdentifier.rawValue.replacingOccurrences(of: "/", with: ".")
         let queryComponent = queries.joined(separator: ";")
-        return "v4/directions/\(profileIdentifier)/\(queryComponent).json"
+        return "v4/directions/mapbox.\(profileIdentifier)/\(queryComponent).json"
     }
 
     override var params: [URLQueryItem] {
