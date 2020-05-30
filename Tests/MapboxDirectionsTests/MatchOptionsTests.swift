@@ -28,16 +28,18 @@ class MatchOptionsTests: XCTestCase {
     
     // MARK: API name-handling tests
     
-    private static var testTracepoints: [Tracepoint] {
+    private static var testTracepoints: [Match.Tracepoint] {
         let one = CLLocationCoordinate2D(latitude: 39.27664, longitude:-84.41139)
         let two = CLLocationCoordinate2D(latitude: 39.27277, longitude:-84.41226)
-        return [one, two].map { Tracepoint(coordinate: $0, countOfAlternatives: 0, name: nil) }
+        return [one, two].map {
+            Match.Tracepoint(coordinate: $0, correction: 0, countOfAlternatives: 0, name: nil, matchingIndex: 0, waypointIndex: 0)
+        }
     }
 
     
     func testWaypointSerialization() {
-        let origin = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.15031, longitude: -84.47182), name: "XU")
-        let destination = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.12971, longitude: -84.51638), name: "UC")
+        let origin = RouteOptions.Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.15031, longitude: -84.47182), name: "XU")
+        let destination = RouteOptions.Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.12971, longitude: -84.51638), name: "UC")
         let options = MatchOptions(waypoints: [origin, destination])
         XCTAssertEqual(options.coordinates, "-84.47182,39.15031;-84.51638,39.12971")
         XCTAssertTrue(options.urlQueryItems.contains(URLQueryItem(name: "waypoint_names", value: "XU;UC")))

@@ -6,14 +6,14 @@ import CoreLocation
 class WalkingOptionsTests: XCTestCase {
     func testURLQueryParams() {
         let waypoints = [
-            Waypoint(coordinate: CLLocationCoordinate2D(latitude: 0, longitude: 1)),
-            Waypoint(coordinate: CLLocationCoordinate2D(latitude: 2, longitude: 3))
+            RouteOptions.Waypoint(coordinate: CLLocationCoordinate2D(latitude: 0, longitude: 1)),
+            RouteOptions.Waypoint(coordinate: CLLocationCoordinate2D(latitude: 2, longitude: 3))
         ]
 
         let options = RouteOptions(waypoints: waypoints, profileIdentifier: DirectionsProfileIdentifier.walking)
         var queryItems = options.urlQueryItems
 
-         XCTAssertEqual(queryItems.first { $0.name == "alley_bias" }?.value, "0.0")
+        XCTAssertEqual(queryItems.first { $0.name == "alley_bias" }?.value, "0.0")
         XCTAssertEqual(queryItems.first { $0.name == "walkway_bias" }?.value, "0.0")
         XCTAssertEqual(queryItems.first { $0.name == "walking_speed" }?.value, "1.42")
         

@@ -34,8 +34,8 @@ class RouteTests: XCTestCase {
         XCTAssertNoThrow(route = try decoder.decode(Route.self, from: routeData))
         
         let expectedLeg = RouteLeg(steps: [], name: "West 6th Avenue Freeway, South University Boulevard", distance: 17036.8, expectedTravelTime: 1083.4, profileIdentifier: .automobileAvoidingTraffic)
-        expectedLeg.source = options.waypoints[0]
-        expectedLeg.destination = options.waypoints[1]
+        expectedLeg.source = Route.Waypoint(coordinate: options.waypoints[0].coordinate, correction: 0, name: options.waypoints[0].name)
+        expectedLeg.destination = Route.Waypoint(coordinate: options.waypoints[1].coordinate, correction: 0, name: options.waypoints[1].name)
         let expectedRoute = Route(legs: [expectedLeg], shape: nil, distance: 17036.8, expectedTravelTime: 1083.4)
         XCTAssertEqual(route, expectedRoute)
         

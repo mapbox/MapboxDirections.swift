@@ -54,7 +54,7 @@ open class DirectionsResult: Codable {
         } else {
             shape = nil
         }
-     
+        
         routeIdentifier = try container.decodeIfPresent(String.self, forKey: .routeIdentifier)
         
         if let identifier = try container.decodeIfPresent(String.self, forKey: .speechLocale) {

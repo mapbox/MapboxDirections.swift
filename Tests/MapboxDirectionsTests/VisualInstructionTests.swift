@@ -84,8 +84,8 @@ class VisualInstructionsTests: XCTestCase {
                 return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
-        let startWaypoint = Waypoint(location:  CLLocation(latitude: 37.780602, longitude: -122.431373), heading: nil, name: "the hotel")
-        let endWaypoint = Waypoint(location: CLLocation(latitude: 37.758859, longitude: -122.404058), heading: nil, name: "the gym")
+        let startWaypoint = RouteOptions.Waypoint(location:  CLLocation(latitude: 37.780602, longitude: -122.431373), heading: nil, name: "the hotel")
+        let endWaypoint = RouteOptions.Waypoint(location: CLLocation(latitude: 37.758859, longitude: -122.404058), heading: nil, name: "the gym")
         
         let options = RouteOptions(waypoints: [startWaypoint, endWaypoint], profileIdentifier: .automobileAvoidingTraffic)
         options.shapeFormat = .polyline
@@ -183,8 +183,8 @@ class VisualInstructionsTests: XCTestCase {
             return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
-        let startWaypoint =  Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.132063, longitude: -84.531074))
-        let endWaypoint = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.138953, longitude: -84.532934))
+        let startWaypoint = RouteOptions.Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.132063, longitude: -84.531074))
+        let endWaypoint = RouteOptions.Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.138953, longitude: -84.532934))
         
         let options = RouteOptions(waypoints: [startWaypoint, endWaypoint], profileIdentifier: .automobileAvoidingTraffic)
         options.shapeFormat = .polyline
@@ -258,8 +258,8 @@ class VisualInstructionsTests: XCTestCase {
             return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
-        let startWaypoint =  Waypoint(coordinate: CLLocationCoordinate2D(latitude: 37.775469, longitude: -122.449158))
-        let endWaypoint = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 37.347439837741376, longitude: -121.92883115196378))
+        let startWaypoint = RouteOptions.Waypoint(coordinate: CLLocationCoordinate2D(latitude: 37.775469, longitude: -122.449158))
+        let endWaypoint = RouteOptions.Waypoint(coordinate: CLLocationCoordinate2D(latitude: 37.347439837741376, longitude: -121.92883115196378))
         
         let options = RouteOptions(waypoints: [startWaypoint, endWaypoint], profileIdentifier: .automobileAvoidingTraffic)
         options.shapeFormat = .polyline

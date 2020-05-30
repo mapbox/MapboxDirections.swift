@@ -230,16 +230,14 @@ class V5Tests: XCTestCase {
                 return OHHTTPStubsResponse(jsonObject: jsonObject, statusCode: 200, headers: ["Content-Type": "application/json"])
         }
         
-        let waypoints = [
-            Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.33841036211459, longitude: -85.20623174166413), coordinateAccuracy: -1, name: "From"),
-            Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.34181048315713, longitude: -85.20399062653789), coordinateAccuracy: -1, name: "Via"),
-            Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.34204769474999, longitude: -85.19969651878529), coordinateAccuracy: -1, name: "To"),
-        ]
-        for waypoint in waypoints {
-            waypoint.separatesLegs = false
-        }
+        var from = RouteOptions.Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.33841036211459, longitude: -85.20623174166413), coordinateAccuracy: -1, name: "From")
+        from.separatesLegs = false
+        var via = RouteOptions.Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.34181048315713, longitude: -85.20399062653789), coordinateAccuracy: -1, name: "Via")
+        via.separatesLegs = false
+        var to = RouteOptions.Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.34204769474999, longitude: -85.19969651878529), coordinateAccuracy: -1, name: "To")
+        to.separatesLegs = false
         
-        let options = RouteOptions(waypoints: waypoints)
+        let options = RouteOptions(waypoints: [from, via, to])
         XCTAssertEqual(options.shapeFormat, .polyline, "Route shape format should be Polyline by default.")
         
         options.shapeFormat = .polyline
@@ -271,12 +269,12 @@ class V5Tests: XCTestCase {
         
         XCTAssertEqual(route?.legs.count, 1)
         let leg = route?.legs.first
-        XCTAssertEqual(leg?.source!.name, waypoints[0].name)
-        XCTAssertEqual(leg?.source?.coordinate.latitude ?? 0, waypoints[0].coordinate.latitude, accuracy: 1e-4)
-        XCTAssertEqual(leg?.source?.coordinate.longitude ?? 0, waypoints[0].coordinate.longitude, accuracy: 1e-4)
-        XCTAssertEqual(leg?.destination!.name, waypoints[2].name)
-        XCTAssertEqual(leg?.destination?.coordinate.latitude ?? 0, waypoints[2].coordinate.latitude, accuracy: 1e-4)
-        XCTAssertEqual(leg?.destination?.coordinate.longitude ?? 0, waypoints[2].coordinate.longitude, accuracy: 1e-4)
+        XCTAssertEqual(leg?.source!.name, from.name)
+        XCTAssertEqual(leg?.source?.coordinate.latitude ?? 0, from.coordinate.latitude, accuracy: 1e-4)
+        XCTAssertEqual(leg?.source?.coordinate.longitude ?? 0, from.coordinate.longitude, accuracy: 1e-4)
+        XCTAssertEqual(leg?.destination!.name, to.name)
+        XCTAssertEqual(leg?.destination?.coordinate.latitude ?? 0, to.coordinate.latitude, accuracy: 1e-4)
+        XCTAssertEqual(leg?.destination?.coordinate.longitude ?? 0, to.coordinate.longitude, accuracy: 1e-4)
         XCTAssertEqual(leg?.name, "Perlen Strasse, Haupt Strasse")
     }
     

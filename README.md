@@ -68,8 +68,8 @@ With the directions object in hand, construct a RouteOptions object and pass it 
 // main.swift
 
 let waypoints = [
-    Waypoint(coordinate: CLLocationCoordinate2D(latitude: 38.9131752, longitude: -77.0324047), name: "Mapbox"),
-    Waypoint(coordinate: CLLocationCoordinate2D(latitude: 38.8977, longitude: -77.0365), name: "White House"),
+    RouteOptions.Waypoint(coordinate: CLLocationCoordinate2D(latitude: 38.9131752, longitude: -77.0324047), name: "Mapbox"),
+    RouteOptions.Waypoint(coordinate: CLLocationCoordinate2D(latitude: 38.8977, longitude: -77.0365), name: "White House"),
 ]
 let options = RouteOptions(waypoints: waypoints, profileIdentifier: .automobileAvoidingTraffic)
 options.includesSteps = true

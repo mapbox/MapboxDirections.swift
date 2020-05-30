@@ -59,8 +59,9 @@ open class RouteLeg: Codable {
      */
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        source = try container.decodeIfPresent(Waypoint.self, forKey: .source)
-        destination = try container.decodeIfPresent(Waypoint.self, forKey: .destination)
+        
+        source = try container.decodeIfPresent(Route.Waypoint.self, forKey: .source)
+        destination = try container.decodeIfPresent(Route.Waypoint.self, forKey: .destination)
         steps = try container.decode([RouteStep].self, forKey: .steps)
         name = try container.decode(String.self, forKey: .name)
         distance = try container.decode(CLLocationDistance.self, forKey: .distance)
@@ -119,7 +120,7 @@ open class RouteLeg: Codable {
      
      This property is set to `nil` if the leg was decoded from a JSON RouteLeg object.
      */
-    public var source: Waypoint?
+    public var source: Route.Waypoint?
 
     /**
      The endpoint of the route leg.
@@ -128,7 +129,7 @@ open class RouteLeg: Codable {
      
      This property is set to `nil` if the leg was decoded from a JSON RouteLeg object.
      */
-    public var destination: Waypoint?
+    public var destination: Route.Waypoint?
     
     // MARK: Getting the Steps Along the Leg
     
@@ -288,8 +289,11 @@ public extension Array where Element == RouteLeg {
     /**
      Populates source and destination information for each leg with waypoint information, typically gathered from DirectionsOptions.
      */
-    func populate(waypoints: [Waypoint]) {
-        let legInfo = zip(zip(waypoints.prefix(upTo: waypoints.endIndex - 1), waypoints.suffix(from: 1)), self)
+    func populate(waypoints: [RouteOptions.Waypoint]) {
+        let routeWaypoints = waypoints.map { Route.Waypoint(coordinate: $0.coordinate,
+                                                            correction: 0,
+                                                            name: $0.name) }
+        let legInfo = zip(zip(routeWaypoints.prefix(upTo: routeWaypoints.endIndex - 1), routeWaypoints.suffix(from: 1)), self)
 
         for (endpoints, leg) in legInfo {
             leg.source = endpoints.0

@@ -33,14 +33,14 @@ class RouteOptionsTests: XCTestCase {
     
     // MARK: API name-handling tests
     
-    private static var testWaypoints: [Waypoint] {
+    private static var testWaypoints: [RouteOptions.Waypoint] {
         return [
-            Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.27664, longitude:-84.41139)),
-            Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.27277, longitude:-84.41226)),
+            RouteOptions.Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.27664, longitude:-84.41139)),
+            RouteOptions.Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.27277, longitude:-84.41226)),
         ]
     }
     
-    private func response(for fixtureName: String, waypoints: [Waypoint] = testWaypoints) -> (waypoints:[Waypoint], route:Route)? {
+    private func response(for fixtureName: String, waypoints: [RouteOptions.Waypoint] = testWaypoints) -> (waypoints: [Route.Waypoint], route: Route)? {
         let testBundle = Bundle(for: type(of: self))
         guard let fixtureURL = testBundle.url(forResource:fixtureName, withExtension:"json") else {
             XCTFail()
@@ -82,8 +82,8 @@ class RouteOptionsTests: XCTestCase {
     }
     
     func testResponseWithManuallySetDestinationName() {
-        let manuallySet = RouteOptionsTests.testWaypoints
-        manuallySet.last!.name = "manuallyset"
+        var manuallySet = RouteOptionsTests.testWaypoints
+        manuallySet[manuallySet.endIndex.advanced(by: -1)].name = "manuallyset"
         
         let response = self.response(for: "apiDestinationName", waypoints: manuallySet)!
         XCTAssertEqual(response.route.legs.last?.destination?.name, "manuallyset", "Waypoint with manually set name should override any computed name.")
@@ -91,12 +91,12 @@ class RouteOptionsTests: XCTestCase {
     
     func testApproachesURLQueryParams() {
         let coordinate = CLLocationCoordinate2D(latitude: 0, longitude: 0)
-        let wp1 = Waypoint(coordinate: coordinate, coordinateAccuracy: 0)
+        var wp1 = RouteOptions.Waypoint(coordinate: coordinate, coordinateAccuracy: 0)
         wp1.allowsArrivingOnOppositeSide = false
         let waypoints = [
-            Waypoint(coordinate: coordinate, coordinateAccuracy: 0),
+            RouteOptions.Waypoint(coordinate: coordinate, coordinateAccuracy: 0),
             wp1,
-            Waypoint(coordinate: coordinate, coordinateAccuracy: 0)
+            RouteOptions.Waypoint(coordinate: coordinate, coordinateAccuracy: 0)
         ]
         
         let routeOptions = RouteOptions(waypoints: waypoints)
@@ -109,9 +109,9 @@ class RouteOptionsTests: XCTestCase {
     func testMissingApproaches() {
         let coordinate = CLLocationCoordinate2D(latitude: 0, longitude: 0)
         let waypoints = [
-            Waypoint(coordinate: coordinate, coordinateAccuracy: 0),
-            Waypoint(coordinate: coordinate, coordinateAccuracy: 0),
-            Waypoint(coordinate: coordinate, coordinateAccuracy: 0)
+            RouteOptions.Waypoint(coordinate: coordinate, coordinateAccuracy: 0),
+            RouteOptions.Waypoint(coordinate: coordinate, coordinateAccuracy: 0),
+            RouteOptions.Waypoint(coordinate: coordinate, coordinateAccuracy: 0)
         ]
         
         let routeOptions = RouteOptions(waypoints: waypoints)
@@ -131,8 +131,8 @@ class RouteOptionsTests: XCTestCase {
     }
     
     func testWaypointSerialization() {
-        let origin = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.15031, longitude: -84.47182), name: "XU")
-        let destination = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.12971, longitude: -84.51638), name: "UC")
+        let origin = RouteOptions.Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.15031, longitude: -84.47182), name: "XU")
+        var destination = RouteOptions.Waypoint(coordinate: CLLocationCoordinate2D(latitude: 39.12971, longitude: -84.51638), name: "UC")
         destination.targetCoordinate = CLLocationCoordinate2D(latitude: 39.13115, longitude: -84.51619)
         let options = RouteOptions(waypoints: [origin, destination])
         XCTAssertEqual(options.coordinates, "-84.47182,39.15031;-84.51638,39.12971")

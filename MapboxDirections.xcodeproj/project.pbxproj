@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2B2759BF243DE1F100D9F9AC /* RouteWaypointTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2759BE243DE1F100D9F9AC /* RouteWaypointTests.swift */; };
 		35828C9E217A003F00ED546E /* OfflineDirections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35828C9D217A003F00ED546E /* OfflineDirections.swift */; };
 		35828C9F217A003F00ED546E /* OfflineDirections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35828C9D217A003F00ED546E /* OfflineDirections.swift */; };
 		35828CA0217A003F00ED546E /* OfflineDirections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35828C9D217A003F00ED546E /* OfflineDirections.swift */; };
@@ -224,9 +225,9 @@
 		DA1A110D1D01045E009F82FA /* DirectionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1A110A1D01045E009F82FA /* DirectionsTests.swift */; };
 		DA2E03E91CB0E0B000D1269A /* RouteStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA2E03E81CB0E0B000D1269A /* RouteStep.swift */; };
 		DA2E03EB1CB0E13D00D1269A /* RouteOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA2E03EA1CB0E13D00D1269A /* RouteOptions.swift */; };
-		DA4F84ED21C08BFB008A0434 /* WaypointTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4F84EC21C08BFB008A0434 /* WaypointTests.swift */; };
-		DA4F84EE21C08BFB008A0434 /* WaypointTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4F84EC21C08BFB008A0434 /* WaypointTests.swift */; };
-		DA4F84EF21C08BFB008A0434 /* WaypointTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4F84EC21C08BFB008A0434 /* WaypointTests.swift */; };
+		DA4F84ED21C08BFB008A0434 /* RouteOptionsWaypointTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4F84EC21C08BFB008A0434 /* RouteOptionsWaypointTests.swift */; };
+		DA4F84EE21C08BFB008A0434 /* RouteOptionsWaypointTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4F84EC21C08BFB008A0434 /* RouteOptionsWaypointTests.swift */; };
+		DA4F84EF21C08BFB008A0434 /* RouteOptionsWaypointTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4F84EC21C08BFB008A0434 /* RouteOptionsWaypointTests.swift */; };
 		DA688B3E21B89ECD00C9BB25 /* VisualInstructionComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA688B3D21B89ECD00C9BB25 /* VisualInstructionComponentTests.swift */; };
 		DA688B3F21B89ECD00C9BB25 /* VisualInstructionComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA688B3D21B89ECD00C9BB25 /* VisualInstructionComponentTests.swift */; };
 		DA688B4021B89ECD00C9BB25 /* VisualInstructionComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA688B3D21B89ECD00C9BB25 /* VisualInstructionComponentTests.swift */; };
@@ -350,6 +351,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2B2759BE243DE1F100D9F9AC /* RouteWaypointTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteWaypointTests.swift; sourceTree = "<group>"; };
 		3556CE9922649CF2009397B5 /* MapboxDirectionsTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "MapboxDirectionsTests-Bridging-Header.h"; path = "../objc/MapboxDirectionsTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		35828C9D217A003F00ED546E /* OfflineDirections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineDirections.swift; sourceTree = "<group>"; };
 		35CC310A2285739700EA1966 /* WalkingOptionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkingOptionsTests.swift; sourceTree = "<group>"; };
@@ -413,7 +415,7 @@
 		DA1A110A1D01045E009F82FA /* DirectionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectionsTests.swift; sourceTree = "<group>"; };
 		DA2E03E81CB0E0B000D1269A /* RouteStep.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteStep.swift; sourceTree = "<group>"; };
 		DA2E03EA1CB0E13D00D1269A /* RouteOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteOptions.swift; sourceTree = "<group>"; };
-		DA4F84EC21C08BFB008A0434 /* WaypointTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaypointTests.swift; sourceTree = "<group>"; };
+		DA4F84EC21C08BFB008A0434 /* RouteOptionsWaypointTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteOptionsWaypointTests.swift; sourceTree = "<group>"; };
 		DA688B3D21B89ECD00C9BB25 /* VisualInstructionComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualInstructionComponentTests.swift; sourceTree = "<group>"; };
 		DA6C9D881CAE442B00094FBC /* MapboxDirections.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MapboxDirections.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA6C9D8A1CAE442B00094FBC /* MapboxDirections.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MapboxDirections.h; sourceTree = "<group>"; };
@@ -695,7 +697,8 @@
 				C52CE3921F6AF6E70069963D /* VisualInstructionTests.swift */,
 				DA688B3D21B89ECD00C9BB25 /* VisualInstructionComponentTests.swift */,
 				35CC310A2285739700EA1966 /* WalkingOptionsTests.swift */,
-				DA4F84EC21C08BFB008A0434 /* WaypointTests.swift */,
+				DA4F84EC21C08BFB008A0434 /* RouteOptionsWaypointTests.swift */,
+				2B2759BE243DE1F100D9F9AC /* RouteWaypointTests.swift */,
 				912DF1A5240507640095D3D2 /* TransportTypeTests.swift */,
 			);
 			name = MapboxDirectionsTests;
@@ -1269,7 +1272,7 @@
 				DAE2DF6923AECB120065057A /* QuickLookTests.swift in Sources */,
 				DA1A110C1D01045E009F82FA /* DirectionsTests.swift in Sources */,
 				C5D1D7F31F6AFBD600A1C4F1 /* VisualInstructionTests.swift in Sources */,
-				DA4F84EE21C08BFB008A0434 /* WaypointTests.swift in Sources */,
+				DA4F84EE21C08BFB008A0434 /* RouteOptionsWaypointTests.swift in Sources */,
 				DAABF78F2395ABA900CEEB61 /* SpokenInstructionTests.swift in Sources */,
 				35CC310C2285739700EA1966 /* WalkingOptionsTests.swift in Sources */,
 				DABE6C7F236A37E200D370F4 /* JSONSerialization.swift in Sources */,
@@ -1348,7 +1351,7 @@
 				DAE2DF6A23AECB120065057A /* QuickLookTests.swift in Sources */,
 				DA1A110D1D01045E009F82FA /* DirectionsTests.swift in Sources */,
 				C5D1D7F41F6AFBD600A1C4F1 /* VisualInstructionTests.swift in Sources */,
-				DA4F84EF21C08BFB008A0434 /* WaypointTests.swift in Sources */,
+				DA4F84EF21C08BFB008A0434 /* RouteOptionsWaypointTests.swift in Sources */,
 				DAABF7902395ABA900CEEB61 /* SpokenInstructionTests.swift in Sources */,
 				35CC310D2285739700EA1966 /* WalkingOptionsTests.swift in Sources */,
 				DABE6C80236A37E200D370F4 /* JSONSerialization.swift in Sources */,
@@ -1474,12 +1477,13 @@
 				DAE2DF6823AECB120065057A /* QuickLookTests.swift in Sources */,
 				DA1A110B1D01045E009F82FA /* DirectionsTests.swift in Sources */,
 				C52CE3931F6AF6E70069963D /* VisualInstructionTests.swift in Sources */,
-				DA4F84ED21C08BFB008A0434 /* WaypointTests.swift in Sources */,
+				DA4F84ED21C08BFB008A0434 /* RouteOptionsWaypointTests.swift in Sources */,
 				DAABF78E2395ABA900CEEB61 /* SpokenInstructionTests.swift in Sources */,
 				35CC310B2285739700EA1966 /* WalkingOptionsTests.swift in Sources */,
 				DABE6C7E236A37E200D370F4 /* JSONSerialization.swift in Sources */,
 				DAABF7922395AE9800CEEB61 /* GeoJSONTests.swift in Sources */,
 				43538E3D23ED6A2000E010D4 /* DirectionsCredentialsTests.swift in Sources */,
+				2B2759BF243DE1F100D9F9AC /* RouteWaypointTests.swift in Sources */,
 				F4D785EF1DDD82C100FF4665 /* RouteStepTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

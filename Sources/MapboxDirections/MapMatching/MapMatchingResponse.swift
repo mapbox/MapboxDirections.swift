@@ -1,10 +1,11 @@
 import Foundation
 
 public struct MapMatchingResponse {
+
     public let httpResponse: HTTPURLResponse?
     
     public var matches : [Match]?
-    public var tracepoints: [Tracepoint?]?
+    public var tracepoints: [Match.Tracepoint?]?
     
     public let options: MatchOptions
     public let credentials: DirectionsCredentials
@@ -25,7 +26,7 @@ extension MapMatchingResponse: Codable {
         case tracepoints
     }
 
-     public init(httpResponse: HTTPURLResponse?, matches: [Match]? = nil, tracepoints: [Tracepoint]? = nil, options: MatchOptions, credentials: DirectionsCredentials) {
+     public init(httpResponse: HTTPURLResponse?, matches: [Match]? = nil, tracepoints: [Match.Tracepoint]? = nil, options: MatchOptions, credentials: DirectionsCredentials) {
         self.httpResponse = httpResponse
         self.matches = matches
         self.tracepoints = tracepoints
@@ -41,6 +42,7 @@ extension MapMatchingResponse: Codable {
         guard let options = decoder.userInfo[.options] as? MatchOptions else {
             throw DirectionsCodingError.missingOptions
         }
+        
         self.options = options
         
         guard let credentials = decoder.userInfo[.credentials] as? DirectionsCredentials else {
@@ -48,8 +50,17 @@ extension MapMatchingResponse: Codable {
         }
         self.credentials = credentials
         
-        tracepoints = try container.decodeIfPresent([Tracepoint?].self, forKey: .tracepoints)
+        tracepoints = try container.decodeIfPresent([Match.Tracepoint?].self, forKey: .tracepoints)
         matches = try container.decodeIfPresent([Match].self, forKey: .matches)
-
+        
+        if let sortedTracepoints = self.tracepoints?.sorted(by: {
+            ($0?.waypointIndex ?? -1) < ($1?.waypointIndex ?? -1)
+        }) {
+            matches?.enumerated().forEach { (index, element) in
+                element.tracepoints = sortedTracepoints.filter {
+                    $0?.matchingIndex == index
+                }
+            }
+        }
     }
 }

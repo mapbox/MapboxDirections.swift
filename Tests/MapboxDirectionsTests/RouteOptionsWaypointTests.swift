@@ -2,15 +2,15 @@ import XCTest
 import CoreLocation
 @testable import MapboxDirections
 
-class WaypointTests: XCTestCase {
+class RouteOptionsWaypointTests: XCTestCase {
     func testCoding() {
         let waypointJSON: [String: Any?] = [
             "location": [-77.036500000000004, 38.8977],
             "name": "White House",
         ]
         let waypointData = try! JSONSerialization.data(withJSONObject: waypointJSON, options: [])
-        var waypoint: Waypoint?
-        XCTAssertNoThrow(waypoint = try JSONDecoder().decode(Waypoint.self, from: waypointData))
+        var waypoint: RouteOptions.Waypoint?
+        XCTAssertNoThrow(waypoint = try JSONDecoder().decode(RouteOptions.Waypoint.self, from: waypointData))
         XCTAssertNotNil(waypoint)
         
         if let waypoint = waypoint {
@@ -25,7 +25,7 @@ class WaypointTests: XCTestCase {
             XCTAssertTrue(waypoint.separatesLegs)
         }
         
-        waypoint = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 38.8977, longitude: -77.0365), coordinateAccuracy: 5, name: "White House")
+        waypoint = RouteOptions.Waypoint(coordinate: CLLocationCoordinate2D(latitude: 38.8977, longitude: -77.0365), coordinateAccuracy: 5, name: "White House")
         waypoint?.targetCoordinate = CLLocationCoordinate2D(latitude: 38.8952261, longitude: -77.0327882)
         waypoint?.heading = 90
         waypoint?.headingAccuracy = 10
@@ -41,34 +41,31 @@ class WaypointTests: XCTestCase {
             XCTAssertNoThrow(encodedWaypointJSON = try JSONSerialization.jsonObject(with: encodedData, options: []) as? [String: Any?])
             XCTAssertNotNil(encodedWaypointJSON)
             
-            // Verify then remove keys that wouldn’t be part of a Waypoint object in the Directions API response.
             XCTAssertEqual(encodedWaypointJSON?["headingAccuracy"] as? CLLocationDirection, waypoint?.headingAccuracy)
-            encodedWaypointJSON?.removeValue(forKey: "headingAccuracy")
             XCTAssertEqual(encodedWaypointJSON?["coordinateAccuracy"] as? CLLocationAccuracy, waypoint?.coordinateAccuracy)
-            encodedWaypointJSON?.removeValue(forKey: "coordinateAccuracy")
             XCTAssertEqual(encodedWaypointJSON?["allowsArrivingOnOppositeSide"] as? Bool, waypoint?.allowsArrivingOnOppositeSide)
-            encodedWaypointJSON?.removeValue(forKey: "allowsArrivingOnOppositeSide")
             XCTAssertEqual(encodedWaypointJSON?["heading"] as? CLLocationDirection, waypoint?.heading)
-            encodedWaypointJSON?.removeValue(forKey: "heading")
             XCTAssertEqual(encodedWaypointJSON?["separatesLegs"] as? Bool, waypoint?.separatesLegs)
-            encodedWaypointJSON?.removeValue(forKey: "separatesLegs")
            
             let targetCoordinateJSON = encodedWaypointJSON?["targetCoordinate"] as? [CLLocationDegrees]
             XCTAssertNotNil(targetCoordinateJSON)
             XCTAssertEqual(targetCoordinateJSON?.count, 2)
             XCTAssertEqual(targetCoordinateJSON?[0] ?? 0, waypoint?.targetCoordinate?.longitude ?? 0, accuracy: 1e-5)
             XCTAssertEqual(targetCoordinateJSON?[1] ?? 0, waypoint?.targetCoordinate?.latitude ?? 0, accuracy: 1e-5)
-            encodedWaypointJSON?.removeValue(forKey: "targetCoordinate")
             
-            XCTAssert(JSONSerialization.objectsAreEqual(waypointJSON, encodedWaypointJSON, approximate: true))
+            let encodedWaypointData = try! JSONSerialization.data(withJSONObject: encodedWaypointJSON!, options: [])
+            var decodedWaypoint: RouteOptions.Waypoint?
+            
+            XCTAssertNoThrow(decodedWaypoint = try JSONDecoder().decode(RouteOptions.Waypoint.self, from: encodedWaypointData))
+            XCTAssertEqual(waypoint, decodedWaypoint)
         }
     }
     
     func testSeparatesLegs() {
-        let one = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 1, longitude: 1))
-        let two = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 2, longitude: 2))
-        let three = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 3, longitude: 3))
-        let four = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 4, longitude: 4))
+        let one = RouteOptions.Waypoint(coordinate: CLLocationCoordinate2D(latitude: 1, longitude: 1))
+        let two = RouteOptions.Waypoint(coordinate: CLLocationCoordinate2D(latitude: 2, longitude: 2))
+        let three = RouteOptions.Waypoint(coordinate: CLLocationCoordinate2D(latitude: 3, longitude: 3))
+        let four = RouteOptions.Waypoint(coordinate: CLLocationCoordinate2D(latitude: 4, longitude: 4))
         
         let routeOptions = RouteOptions(waypoints: [one, two, three, four])
         let matchOptions = MatchOptions(waypoints: [one, two, three, four], profileIdentifier: nil)
@@ -76,19 +73,19 @@ class WaypointTests: XCTestCase {
         XCTAssertNil(routeOptions.urlQueryItems.first { $0.name == "waypoints" }?.value)
         XCTAssertNil(matchOptions.urlQueryItems.first { $0.name == "waypoints" }?.value)
         
-        two.separatesLegs = false
+        routeOptions.waypoints[1].separatesLegs = false
+        matchOptions.waypoints[1].separatesLegs = false
         
         XCTAssertEqual(routeOptions.urlQueryItems.first { $0.name == "waypoints" }?.value, "0;2;3")
         XCTAssertEqual(matchOptions.urlQueryItems.first { $0.name == "waypoints" }?.value, "0;2;3")
         
-        two.separatesLegs = true
         matchOptions.waypointIndices = [0, 2, 3]
         
         XCTAssertEqual(matchOptions.urlQueryItems.first { $0.name == "waypoints" }?.value, "0;2;3")
     }
     
     func testHeading() {
-        let waypoint = Waypoint(coordinate: kCLLocationCoordinate2DInvalid)
+        var waypoint = RouteOptions.Waypoint(coordinate: kCLLocationCoordinate2DInvalid)
         XCTAssertEqual(waypoint.headingDescription, "")
         
         waypoint.heading = 0
@@ -105,49 +102,61 @@ class WaypointTests: XCTestCase {
     }
     
     func testEquality() {
-        let left = Waypoint(coordinate: CLLocationCoordinate2D(), coordinateAccuracy: nil, name: nil)
+        let left = RouteOptions.Waypoint(coordinate: CLLocationCoordinate2D(), coordinateAccuracy: nil, name: nil)
         XCTAssertEqual(left, left)
         
-        var right = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 1, longitude: 1), coordinateAccuracy: nil, name: nil)
+        var right = RouteOptions.Waypoint(coordinate: CLLocationCoordinate2D(latitude: 1, longitude: 1), coordinateAccuracy: nil, name: nil)
         XCTAssertNotEqual(left, right)
         
-        right = Waypoint(coordinate: CLLocationCoordinate2D(), coordinateAccuracy: 0, name: nil)
+        right = RouteOptions.Waypoint(coordinate: CLLocationCoordinate2D(), coordinateAccuracy: 0, name: nil)
         XCTAssertNotEqual(left, right)
         
-        right = Waypoint(coordinate: CLLocationCoordinate2D(), coordinateAccuracy: nil, name: "")
+        right = RouteOptions.Waypoint(coordinate: CLLocationCoordinate2D(), coordinateAccuracy: nil, name: "")
         XCTAssertNotEqual(left, right)
     }
     
     func testTracepointEquality() {
-        let left = Tracepoint(coordinate: CLLocationCoordinate2D(), countOfAlternatives: 0, name: nil)
+        let left = Match.Tracepoint(coordinate: CLLocationCoordinate2D(), correction: 0, countOfAlternatives: 0, name: nil, matchingIndex: 0, waypointIndex: 0)
         XCTAssertEqual(left, left)
         
-        let right = Tracepoint(coordinate: CLLocationCoordinate2D(), countOfAlternatives: 0, name: nil)
+        var right = Match.Tracepoint(coordinate: CLLocationCoordinate2D(), correction: 0, countOfAlternatives: 0, name: nil, matchingIndex: 0, waypointIndex: 0)
         XCTAssertEqual(left, right)
         
-        // FIXME: Only Waypoint.==(_:_:) ever gets called: <https://stackoverflow.com/a/28794214/4585461>. This will be moot once Tracepoint becomes a struct that doesn’t inherit from Waypoint: <https://github.com/mapbox/mapbox-directions-swift/pull/388>.
-//        right = Tracepoint(coordinate: CLLocationCoordinate2D(latitude: 1, longitude: 1), countOfAlternatives: 0, name: nil)
-//        XCTAssertNotEqual(left, right)
-//
-//        right = Tracepoint(coordinate: CLLocationCoordinate2D(), countOfAlternatives: 1, name: nil)
-//        XCTAssertNotEqual(left, right)
-//
-//        right = Tracepoint(coordinate: CLLocationCoordinate2D(), countOfAlternatives: 0, name: "")
-//        XCTAssertNotEqual(left, right)
+        right = Match.Tracepoint(coordinate: CLLocationCoordinate2D(latitude: 1, longitude: 1), correction: 0, countOfAlternatives: 0, name: nil, matchingIndex: 0, waypointIndex: 0)
+        XCTAssertNotEqual(left, right)
+
+        right = Match.Tracepoint(coordinate: CLLocationCoordinate2D(), correction: 1, countOfAlternatives: 0, name: nil, matchingIndex: 0, waypointIndex: 0)
+        XCTAssertNotEqual(left, right)
+
+        right = Match.Tracepoint(coordinate: CLLocationCoordinate2D(), correction: 0, countOfAlternatives: 1, name: nil, matchingIndex: 0, waypointIndex: 0)
+        XCTAssertNotEqual(left, right)
+        
+        right = Match.Tracepoint(coordinate: CLLocationCoordinate2D(), correction: 0, countOfAlternatives: 9, name: "", matchingIndex: 0, waypointIndex: 0)
+        XCTAssertNotEqual(left, right)
+        
+        right = Match.Tracepoint(coordinate: CLLocationCoordinate2D(), correction: 0, countOfAlternatives: 0, name: nil, matchingIndex: 1, waypointIndex: 0)
+        XCTAssertNotEqual(left, right)
+        
+        right = Match.Tracepoint(coordinate: CLLocationCoordinate2D(), correction: 0, countOfAlternatives: 0, name: nil, matchingIndex: 0, waypointIndex: 1)
+        XCTAssertNotEqual(left, right)
     }
     
     func testAccuracies() {
-        let from = Waypoint(location: CLLocation(coordinate: CLLocationCoordinate2D(latitude: 0, longitude: 0), altitude: -1, horizontalAccuracy: -1, verticalAccuracy: -1, timestamp: Date()))
-        let to = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 0, longitude: 0))
+        let from = RouteOptions.Waypoint(location: CLLocation(coordinate: CLLocationCoordinate2D(latitude: 0, longitude: 0),
+                                                              altitude: -1,
+                                                              horizontalAccuracy: -1,
+                                                              verticalAccuracy: -1,
+                                                              timestamp: Date()))
+        let to = RouteOptions.Waypoint(coordinate: CLLocationCoordinate2D(latitude: 0, longitude: 0))
         let options = RouteOptions(waypoints: [from, to])
         XCTAssertNil(options.bearings)
         XCTAssertNil(options.radiuses)
         
-        from.heading = 90
-        from.headingAccuracy = 45
+        options.waypoints[0].heading = 90
+        options.waypoints[0].headingAccuracy = 45
         XCTAssertEqual(options.bearings, "90.0,45.0;")
         
-        from.coordinateAccuracy = 5
+        options.waypoints[0].coordinateAccuracy = 5
         XCTAssertEqual(options.radiuses, "5.0;unlimited")
     }
 }
