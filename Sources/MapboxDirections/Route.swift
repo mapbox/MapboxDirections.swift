@@ -34,8 +34,7 @@ open class Route: DirectionsResult {
 
 extension Route: Equatable {
     public static func ==(lhs: Route, rhs: Route) -> Bool {
-        return lhs.routeIdentifier == rhs.routeIdentifier &&
-            lhs.distance == rhs.distance &&
+        return lhs.distance == rhs.distance &&
             lhs.expectedTravelTime == rhs.expectedTravelTime &&
             lhs.typicalTravelTime == rhs.typicalTravelTime &&
             lhs.speechLocale == rhs.speechLocale &&

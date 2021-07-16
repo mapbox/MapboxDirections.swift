@@ -61,7 +61,6 @@ class RoutableMatchTest: XCTestCase {
         XCTAssertNotNil(route)
         XCTAssertNotNil(route.shape)
         XCTAssertEqual(route.shape!.coordinates.count, 19)
-        XCTAssertEqual(route.routeIdentifier, nil)
         
         let waypoints = routeResponse.waypoints!
         XCTAssertNotNil(waypoints)

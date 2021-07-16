@@ -66,7 +66,6 @@ class AnnotationTests: XCTestCase {
         if let route = route {
             XCTAssertNotNil(route.shape)
             XCTAssertEqual(route.shape?.coordinates.count, 154)
-            XCTAssertEqual(route.routeIdentifier, "ck4f22iso03fm78o2f96mt5e9")
             XCTAssertEqual(route.legs.count, 1)
         }
         

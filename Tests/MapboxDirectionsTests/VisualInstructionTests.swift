@@ -146,7 +146,6 @@ class VisualInstructionsTests: XCTestCase {
         }
         
         XCTAssertNotNil(route)
-        XCTAssertEqual(route.routeIdentifier, "cjgy4xps418g17mo7l2pdm734")
         
         let leg = route.legs.first!
         let step = leg.steps[1]
@@ -241,7 +240,6 @@ class VisualInstructionsTests: XCTestCase {
         }
         
         XCTAssertNotNil(route)
-        XCTAssertEqual(route.routeIdentifier, "cjikck25m00v279ms1knttdgc")
         
         let step = route.legs.first!.steps.first!
         let visualInstructions = step.instructionsDisplayedAlongStep
@@ -320,7 +318,6 @@ class VisualInstructionsTests: XCTestCase {
           }
         
         XCTAssertNotNil(route)
-        XCTAssertEqual(route.routeIdentifier, "cjilrvx2200447omltwdayvm4")
         
         let step = route.legs.first!.steps.first!
         let visualInstructions = step.instructionsDisplayedAlongStep

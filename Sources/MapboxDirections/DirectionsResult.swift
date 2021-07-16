@@ -15,7 +15,6 @@ open class DirectionsResult: Codable {
         case expectedTravelTime = "duration"
         case typicalTravelTime = "duration_typical"
         case directionsOptions
-        case routeIdentifier
         case speechLocale = "voiceLocale"
     }
     
@@ -57,8 +56,6 @@ open class DirectionsResult: Codable {
         } else {
             shape = nil
         }
-     
-        routeIdentifier = try container.decodeIfPresent(String.self, forKey: .routeIdentifier)
         
         if let identifier = try container.decodeIfPresent(String.self, forKey: .speechLocale) {
             speechLocale = Locale(identifier: identifier)
@@ -82,7 +79,6 @@ open class DirectionsResult: Codable {
         try container.encode(distance, forKey: .distance)
         try container.encode(expectedTravelTime, forKey: .expectedTravelTime)
         try container.encodeIfPresent(typicalTravelTime, forKey: .typicalTravelTime)
-        try container.encodeIfPresent(routeIdentifier, forKey: .routeIdentifier)
 
         if responseContainsSpeechLocale {
             try container.encode(speechLocale?.identifier, forKey: .speechLocale)
@@ -161,13 +157,6 @@ open class DirectionsResult: Codable {
     open var speechLocale: Locale?
     
     // MARK: Auditing the Server Response
-    
-    /**
-     A unique identifier for a directions request.
-     
-     Each route produced by a single call to `Directions.calculate(_:completionHandler:)` has the same route identifier.
-     */
-    open var routeIdentifier: String?
     
     /**
      The time immediately before a `Directions` object fetched this result.

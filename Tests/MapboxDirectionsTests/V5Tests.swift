@@ -84,8 +84,6 @@ class V5Tests: XCTestCase {
         
         XCTAssertNotNil(route.shape)
         XCTAssertEqual(route.shape!.coordinates.count, 30_097)
-        XCTAssertEqual(route.routeIdentifier?.count, 25)
-        XCTAssertTrue(route.routeIdentifier?.starts(with: "cjsb5x") ?? false)
         XCTAssertEqual(route.speechLocale?.identifier, "en-US")
         
         // confirming actual decoded values is important because the Directions API

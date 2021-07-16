@@ -11,6 +11,7 @@
 * Xcode 12.0 or above is now required to build MapboxDirections from source. ([#548](https://github.com/mapbox/mapbox-directions-swift/pull/548))
 * You can fully build this SDK on Macs with Apple Silicon. ([#548](https://github.com/mapbox/mapbox-directions-swift/pull/548))
 * `RouteOptions.alleyPriority`, `RouteOptions.walkwayPriority`, and `RouteOptions.speed` are now optional. Set them explicitly if you want to include them in the HTTP request. Renamed `DirectionsOptions.default` to `DirectionsOptions.medium`. ([#557](https://github.com/mapbox/mapbox-directions-swift/pull/557))
+* Removed obsolete `DirectionsResult.routeIdentifier` property. It is recommended to use corresponding `RouteResponse.identifier` value in conjunction with `Route` index in `RouteResponse.routes` array instead ([#562](https://github.com/mapbox/mapbox-directions-swift/pull/562)).
 
 ## v1.2.0
 

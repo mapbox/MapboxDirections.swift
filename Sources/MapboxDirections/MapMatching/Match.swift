@@ -107,8 +107,7 @@ open class Match: DirectionsResult {
 
 extension Match: Equatable {
     public static func ==(lhs: Match, rhs: Match) -> Bool {
-        return lhs.routeIdentifier == rhs.routeIdentifier &&
-            lhs.distance == rhs.distance &&
+        return lhs.distance == rhs.distance &&
             lhs.expectedTravelTime == rhs.expectedTravelTime &&
             lhs.speechLocale == rhs.speechLocale &&
             lhs.responseContainsSpeechLocale == rhs.responseContainsSpeechLocale &&

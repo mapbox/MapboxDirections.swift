@@ -67,7 +67,6 @@ class MatchTests: XCTestCase {
         XCTAssertNotNil(match)
         XCTAssertNotNil(match.shape)
         XCTAssertEqual(match.shape!.coordinates.count, 18)
-        XCTAssertEqual(match.routeIdentifier, nil)
         
         let tracePoints = response.tracepoints
         XCTAssertNotNil(tracePoints)

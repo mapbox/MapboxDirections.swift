@@ -131,7 +131,6 @@ extension RouteResponse: Codable {
         if let routes = try container.decodeIfPresent([Route].self, forKey: .routes) {
             // Postprocess each route.
             for route in routes {
-                route.routeIdentifier = identifier
                 // Imbue each route’s legs with the waypoints refined above.
                 if let waypoints = waypoints {
                     route.legSeparators = waypoints.filter { $0.separatesLegs }

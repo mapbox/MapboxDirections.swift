@@ -73,7 +73,7 @@ struct ContentView: View {
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 10, content: {
-                ForEach(vm.routes, id: \.routeIdentifier) { route in
+                ForEach(vm.routes, id: \.distance) { route in
                     VStack(alignment: .leading, spacing: 3) {
                         headerView(for: route)
                         ForEach(0..<route.legs.count, id: \.self) { legIdx in
